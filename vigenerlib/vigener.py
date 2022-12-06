@@ -1,13 +1,63 @@
 import math
+import re
 
+def prime_numbers(max: int):
+    base = [int(i) for i in("1"*max)]
+
+    for i in range(2, max):
+        if not base[i]:
+            continue
+        for j in range(math.pow(i, i), max, i):
+            base[j] = -1
+
+    return [index for index, i in enumerate(base) if i == 1 and index > 1]
+
+def int_factorization(value: int):
+    numbers = prime_numbers(int(math.sqrt(value)))
+    factorization = []
+    for prim in numbers:
+        while value % prim ==0:
+            factorization.append(prim)
+            value = value // prim
+    if value != 1:
+        factorization.append(value)
+    return factorization
+    
 
 class Kasiski:
 
     def __init__(self):
-        pass
-    def load_cryptogram():
-        pass
-    def search_sequence():
+        self._cryptogram: str = ""
+    def load_cryptogram(self, cryptogram: str) -> None:
+        self._cryptogram = cryptogram
+        self._sub_sequence = []
+    def search_sequence(self)-> None:
+        result = []
+        for i in range(len(self._cryptogram) // 2, 1, -1):
+            for j in range(len(self._cryptogram)):
+                if j+i <= len(self._cryptogram):
+                    
+                    #check sub patterns like:  "NHRGY" in "ZKNHRGY"
+                    can_continue = False
+                    for k in result:
+                        if self._cryptogram[j:j+i] in k[0]:
+                            can_continue = True
+                            break
+                    if can_continue:
+                        continue
+                    
+                    local_result = re.findall(self._cryptogram[j:j+i], self._cryptogram)
+
+                    if len(local_result) >= 2:
+                        result.append(local_result)
+
+        # for i in range(2, len(self._cryptogram)):
+        #     for j in range(len(self._cryptogram)):
+        #         local_result = re.findall(self._cryptogram[j:j+i], self._cryptogram) 
+        #         if len(local_result) > 1:
+        #             result.append(local_result)
+        self._sub_sequence = [i[0] for i in result]
+    def calculate_key_length(self):
         pass
     def get_result(self):
         pass
@@ -110,6 +160,7 @@ class Vigener:
             secret_key = self.search_key(self, frequency, i[1])
             #decode a otestování se slovníkem
     def decode(self, secret_key: str)->str:
+        #převést zasifrovany text na text text
         pass
 
     def search_key(self, frequency: list[str], frequent_char: str) -> str:
@@ -120,9 +171,3 @@ class Vigener:
                     secret_key.append(j[0])
                     break
         return "".join(secret_key)
-
-
-
-    
-    def decode(self):
-        pass
