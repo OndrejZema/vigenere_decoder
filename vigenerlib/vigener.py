@@ -65,11 +65,15 @@ class Kasiski:
 class Friedman:
 
     @property
-    def cryptogram_analysis(self)->dict[str, int]:
+    def key_length(self)->int:
+        return self._key_length
+
+    @property
+    def cryptogram_analysis(self)->dict[str, float]:
         return self._frequency_analysis
 
     @property
-    def language_analysis(self):
+    def language_analysis(self)->dict[str, float]:
         return self._language_analysis
 
     def __init__(self):
@@ -110,9 +114,15 @@ class Friedman:
             sum += 1 / math.pow(26, 2)
         self._index_min = sum
 
-    def calculate_key_length(self) -> None:
-        self._key_length = (len(self._cryptogram)*(self._index_language - self._index_min))/( ((len(self._cryptogram)-1)*self._index_cryptogram) - (len(self._cryptogram) * self._index_min) + self._index_language )
+    def calculate_key_length(self) -> int:
+        self.calculate_index_language()
+        self.calculate_index_cryptogram()
+        self.calculate_index_min()
+        # print("\n({} * {}) / ({} * {} - {} * {} + {})".format(len(self._cryptogram), self._index_language - self._index_min, len(self._cryptogram)-1, self._index_cryptogram, len(self._cryptogram), self._index_min, self._index_language))
 
+
+        self._key_length = round((len(self._cryptogram)*(self._index_language - self._index_min))/( ((len(self._cryptogram)-1)*self._index_cryptogram) - (len(self._cryptogram) * self._index_min) + self._index_language ))
+        return self._key_length
 class Vigener:
     def __init__(self, key_length: int):
         self._key_length: int = key_length

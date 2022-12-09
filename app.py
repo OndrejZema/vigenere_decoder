@@ -8,6 +8,26 @@ def main():
     kasiski.load_cryptogram(cryptogram)
     kasiski.search_sequence()
 
+    language = {}
+    with open("data/csCZfreq.csv") as f:
+        for i in f.readlines():
+            i = i.replace("\n", "")
+            language[i.split(",")[0]] = float(i.split(",")[1])
+
+    print(language)
+
+    friedman = Friedman()
+    friedman.load_language(language)
+    friedman.load_cryptogram(cryptogram)
+
+    # friedman.calculate_index_language()
+    # friedman.calculate_index_cryptogram()
+    # friedman.calculate_index_min()
+    
+    print(friedman.calculate_key_length())
+
+
+
 
 if __name__ == "__main__":
     main()
