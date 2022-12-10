@@ -1,18 +1,16 @@
 import math
 import re
 
-def prime_numbers(max: int):
+def prime_numbers(max: int)->list[int]:
     base = [int(i) for i in("1"*max)]
-
     for i in range(2, max):
         if not base[i]:
             continue
-        for j in range(math.pow(i, i), max, i):
+        for j in range(int(math.pow(i, i)), max, i):
             base[j] = -1
-
     return [index for index, i in enumerate(base) if i == 1 and index > 1]
 
-def int_factorization(value: int):
+def int_factorization(value: int)->list[int]:
     numbers = prime_numbers(int(math.sqrt(value)))
     factorization = []
     for prim in numbers:
@@ -25,12 +23,20 @@ def int_factorization(value: int):
     
 
 class Kasiski:
+    @property
+    def key_length(self):
+        return self._key_length
+    @property
+    def sub_seq(self):
+        return self._sub_sequences
 
     def __init__(self):
         self._cryptogram: str = ""
+        self._key_length:int = 0
     def load_cryptogram(self, cryptogram: str) -> None:
         self._cryptogram = cryptogram
-        self._sub_sequence = []
+        self._sub_sequences = []
+        self.search_sequence()
     def search_sequence(self)-> None:
         result = []
         for i in range(len(self._cryptogram) // 2, 1, -1):
@@ -56,11 +62,35 @@ class Kasiski:
         #         local_result = re.findall(self._cryptogram[j:j+i], self._cryptogram) 
         #         if len(local_result) > 1:
         #             result.append(local_result)
-        self._sub_sequence = [i[0] for i in result]
-    def calculate_key_length(self):
-        pass
-    def get_result(self):
-        pass
+        self._sub_sequences = [i[0] for i in result]
+
+    def calculate_key_length(self)->int:
+        lengths = [] # délky mezi jednotlivými sub sequencemi
+        for i in self._sub_sequences:
+            prev_finding = None
+            for j in re.finditer(i, self._cryptogram):
+                if prev_finding == None:                    
+                    prev_finding = j
+                    continue
+                lengths.append({"text": j.group(), "len": j.span()[0] - prev_finding.span()[0]})
+        
+        full_factorization = [] # prvočíselný rozklad pro jednotlivé podsekvence
+        for i in lengths:
+            full_factorization.append({"text": i["text"], "primes": int_factorization(i["len"])})
+        
+        all_primes_count = {} # počet kolikrát se jednotlivé prvočísla vyskytují v rozkladech (počítá se vždy jeden výskyt na jeden rozklad)
+        for i in full_factorization:
+            for j in set(i["primes"]):
+                if j in all_primes_count.keys():
+                    all_primes_count[j] += 1
+                else:
+                    all_primes_count[j] = 1
+
+        common_prime = max(all_primes_count, key=all_primes_count.get)
+        self._key_length = common_prime
+        return self._key_length
+
+
 
 class Friedman:
 
@@ -128,9 +158,7 @@ class Vigener:
         self._key_length: int = key_length
         self._cryptogram: str = ""
         self._language_analysis: dict[str, int] = {}
-        self._cryptogram_table: list[list[str]] = []
-        for i in range(self._key_length):
-            self._cryptogram_table.append([])
+        self._cryptogram_table: list[list[str]] = [[] for _ in range(self._key_length)]
         self._vigener_table: list[list[str]] = []
         for i in range(26):
             self._vigener_table.append([])
@@ -139,12 +167,13 @@ class Vigener:
 
     def load_cryptogram(self, cryptogram: str) -> None:
         self._cryptogram = cryptogram
+
         for index, i in enumerate(cryptogram):
-            self._cryptogram_table[index % self._key_length + 1].append(i)
+            self._cryptogram_table[index % self._key_length].append(i)
     
     def load_language(self, analysis: dict[str, float]) -> None:
         # self._language_analysis = analysis
-        self._language_analysis = {k: v for k, v, in reversed(sorted(analysis.items(), lambda item: item[1]))}
+        self._language_analysis = {k: v for k, v, in reversed(sorted(analysis.items(), key=lambda item: item[1]))}
 
     def analyze_cryptogram(self) -> None:
         frequency: list[str] = []
@@ -165,9 +194,10 @@ class Vigener:
                     max_value = i[1]
                     max_character = i[0]
             frequency.append(max_character)
-
+        print(frequency)
         for i in self._language_analysis.items():
-            secret_key = self.search_key(self, frequency, i[1])
+            secret_key = self.search_key(frequency, i[1])
+            print(self.decode(secret_key))
             #decode a otestování se slovníkem
     def decode(self, secret_key: str)->str:
         #převést zasifrovany text na text text
