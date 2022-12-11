@@ -20,7 +20,15 @@ def int_factorization(value: int)->list[int]:
     if value != 1:
         factorization.append(value)
     return factorization
-    
+
+def sum_list(data: list):
+    result = {}
+    for i in data:
+        if i in result.keys():
+            result[i] += 1
+        else:
+            result[i] = 1
+    return result
 
 class Kasiski:
     @property
@@ -80,6 +88,7 @@ class Kasiski:
         
         all_primes_count = {} # počet kolikrát se jednotlivé prvočísla vyskytují v rozkladech (počítá se vždy jeden výskyt na jeden rozklad)
         for i in full_factorization:
+
             for j in set(i["primes"]):
                 if j in all_primes_count.keys():
                     all_primes_count[j] += 1
@@ -176,7 +185,7 @@ class Vigener:
         self._language_analysis = {k: v for k, v, in reversed(sorted(analysis.items(), key=lambda item: item[1]))}
 
     def analyze_cryptogram(self) -> None:
-        frequency: list[str] = []
+        frequency: list[str] = [] # nejcastejsi pismena ze sloupecků
         for col in self._cryptogram_table:
             
             analyze: dict[str, int] = {}
@@ -186,28 +195,31 @@ class Vigener:
                 else: 
                     analyze[i] = 1
             
-            max_value = 0
-            max_character = ""
+            frequency.append(max(analyze, key=analyze.get))
 
-            for i in analyze.items():
-                if i[1] > max_value:
-                    max_value = i[1]
-                    max_character = i[0]
-            frequency.append(max_character)
-        print(frequency)
+
+        print("frequency{}".format(frequency))
+        #prochazime z duvodu vice moznosti, ale zaciname pismenem "e"
+        print(self._language_analysis)
         for i in self._language_analysis.items():
-            secret_key = self.search_key(frequency, i[1])
+            secret_key = self.search_key(frequency, i[0])
             print(self.decode(secret_key))
-            #decode a otestování se slovníkem
+            break
+            #decode a otestování se slovníkem... pokud dobré tak hotovo... pokud ne, tak jdeme na dalsi nejcastejsi pismeno
     def decode(self, secret_key: str)->str:
-        #převést zasifrovany text na text text
-        pass
+        message: list[str] = []
+        for index, character in enumerate(self._cryptogram):
+            # message.append((chr((ord(secret_key[index % len(secret_key)]) + ord(character))%26 + ord("A"))))
+            message.append(   chr(   ((  ord(character) - ord(secret_key[index % len(secret_key)])   ) % 26) + ord("A")   )  )
 
-    def search_key(self, frequency: list[str], frequent_char: str) -> str:
+        return "".join(message)
+
+    def search_key(self, frequency: list[str], character: str) -> str:
         secret_key: list[str] = []
         for i in frequency:
             for j in self._vigener_table:
-                if j[ord(frequent_char) - ord("A")] == i:
+                if j[ord(character.upper()) - ord("A")] == i:
                     secret_key.append(j[0])
                     break
+        print(secret_key)
         return "".join(secret_key)

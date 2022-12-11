@@ -29,6 +29,12 @@ def main():
     vigener.load_language(language)
     vigener.analyze_cryptogram()
 
+    # vigener = Vigener(3)
+    # vigener.load_cryptogram(cryptogram)
+    # vigener.load_language(language)
+    # vigener.analyze_cryptogram()
+
+
 
 
 if __name__ == "__main__":
