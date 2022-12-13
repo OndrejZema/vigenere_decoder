@@ -7,19 +7,22 @@ import {
   Route,
   BrowserRouter
 } from "react-router-dom";
-import { Upload } from './scenes/upload/Upload';
+import { UploadCryptogram } from './scenes/uploadCryptogram/UploadCryptogram';
 import { Result } from './scenes/result/Result';
 import { Decode } from './scenes/decode/Decode';
 import { GlobalContextProvider } from './store/GlobalContextProvider';
+import { UploadLanguge } from './scenes/uploadLanguage/UploadLanguage';
+import { CustomRoute } from './components/CustomRoute';
 
 function App() {
   return (
     <GlobalContextProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Upload />}></Route>
-          <Route path="/result" element={<Result />}></Route>
-          <Route path="/decode" element={<Decode />}></Route>
+          <Route path="/" element={<CustomRoute> <UploadCryptogram /> </CustomRoute>}></Route>
+          <Route path="/language" element={<CustomRoute><UploadLanguge /></CustomRoute>}></Route>
+          <Route path="/result" element={<CustomRoute><Result /></CustomRoute>}></Route>
+          <Route path="/decode" element={<CustomRoute><Decode /></CustomRoute>}></Route>
         </Routes>
       </BrowserRouter>
 

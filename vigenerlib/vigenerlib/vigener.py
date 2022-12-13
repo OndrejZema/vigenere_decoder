@@ -103,6 +103,7 @@ class Kasiski:
 
 class Friedman:
 
+
     @property
     def key_length(self)->int:
         return self._key_length
@@ -122,7 +123,7 @@ class Friedman:
         self._index_cryptogram: float = 0
         self._index_min: float = 0
         self._cryptogram: str = ""
-        self._key_length = 0
+        self._key_length: int = 0
     def load_language(self, analysis: dict[str, float]) -> None:
         self._language_analysis = analysis
 
@@ -163,6 +164,11 @@ class Friedman:
         self._key_length = round((len(self._cryptogram)*(self._index_language - self._index_min))/( ((len(self._cryptogram)-1)*self._index_cryptogram) - (len(self._cryptogram) * self._index_min) + self._index_language ))
         return self._key_length
 class Vigener:
+
+    @property
+    def key(self):
+        return self._key
+
     def __init__(self, key_length: int):
         self._key_length: int = key_length
         self._cryptogram: str = ""
@@ -173,6 +179,7 @@ class Vigener:
             self._vigener_table.append([])
             for j in range(26):
                 self._vigener_table[i].append(chr(((i + j) % 26) + 65))
+        self._key: str = ""
 
     def load_cryptogram(self, cryptogram: str) -> None:
         self._cryptogram = cryptogram
@@ -222,4 +229,5 @@ class Vigener:
                     secret_key.append(j[0])
                     break
         print(secret_key)
-        return "".join(secret_key)
+        self._key = "".join(secret_key)
+        return self._key

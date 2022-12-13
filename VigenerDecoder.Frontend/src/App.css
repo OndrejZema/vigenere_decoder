@@ -36,3 +36,37 @@
     transform: rotate(360deg);
   }
 }
+
+.vh-75{
+  height: 75vh;
+}
+.round{
+  border-radius: 5rem;
+}
+
+
+.file-input {
+  border-style: dashed;
+  border-radius: 3px;
+  cursor: pointer;
+  border-color: #b3b3b3;
+  color: #b6b4b4;
+  background-color: #f0efef;
+  padding: 3rem;
+}
+.file-input:hover{
+  border-color: #999999;
+  color: #818181;
+  background-color: #f5f5f5;
+
+}
+
+
+.dragAndDropPlaceEnabled {
+  border-style: dashed;
+  border-radius: 3px;
+  cursor: pointer;
+  border-color: #3b3b3b;
+  color: #3b3b3b;
+  background-color: #f8f8f8;
+}
