@@ -5,6 +5,7 @@ import { useDropzone } from 'react-dropzone'
 
 interface DynamicInputPanelProps {
     showFileInput: boolean
+    textValue: string
     onUploadCryptogram: (files: Array<File>)=>void
     onChangeText: (cryptogram: string)=>void
 }
@@ -24,7 +25,12 @@ export const DynamicInputPanel = (props: DynamicInputPanelProps) => {
         </div>
         :
         <div>
-            <Form.Control as="textarea" className='mt-2 mb-2' rows={5} onChange={(e)=> props.onChangeText(e.target.value)}>
+            <Form.Control as="textarea" 
+            className='mt-2 mb-2' 
+            rows={5} 
+            onChange={(e)=> props.onChangeText(e.target.value)}
+            value={props.textValue}
+            >
             </Form.Control>
         </div>
 }

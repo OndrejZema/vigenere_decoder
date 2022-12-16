@@ -2,24 +2,26 @@ import React from 'react'
 import { Panel } from '../../components/Panel'
 import { setMessage } from '../../store/actions/DecoderActions'
 import { GlobalContext } from '../../store/GlobalContextProvider'
+import { Button, Form } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 
 
 export const Decode = () => {
 
-    const {decoderState, decoderDispatch} = React.useContext(GlobalContext)
+    const { decoderState, decoderDispatch } = React.useContext(GlobalContext)
 
-    React.useEffect(()=>{
+    React.useEffect(() => {
         fetch(`${process.env.REACT_APP_API_URL}/api/decode`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({cryptogram: decoderState.cryptogram, keyLength: decoderState.keyLength, language: decoderState.language})
+            body: JSON.stringify({ cryptogram: decoderState.cryptogram, keyLength: decoderState.keyLength, language: decoderState.language })
         })
-        .then(data => data.json())
-        .then(json => setMessage(decoderDispatch, json))
-        .catch()
+            .then(data => data.json())
+            .then(json => setMessage(decoderDispatch, json))
+            .catch()
     }, [])
 
     return (
@@ -27,7 +29,14 @@ export const Decode = () => {
             <h2>Dekódovaná zpráva</h2>
             <hr />
             <div>Rozkódovaná zpráva</div>
-            <div className='font-monospace'>{decoderState.message}</div>
+            <Form.Control as="textarea" className='mt-2 mb-2' rows={5} value={decoderState.message} wrap='true' readOnly={true}>
+            </Form.Control>
+            <div className='d-flex justify-content-between'>
+                <Link to="/result">
+                    <Button>Zpět</Button>
+                </Link>
+                <Button>Zkopírovat do schránky</Button>
+            </div>
 
         </Panel>
     )

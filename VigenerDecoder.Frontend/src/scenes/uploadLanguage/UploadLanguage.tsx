@@ -52,7 +52,11 @@ export const UploadLanguge = () => {
                 ""
             }
 
-            <div className="d-flex justify-content-end">
+            <div className="d-flex justify-content-between">
+            <Link to="/">
+                    <Button>Zpět na zadávání kryptogramu</Button>
+                </Link>
+
                 <Link to={decoderState.language === ""?"":"/result"}>
                     <Button disabled={decoderState.language === ""}>
                         Odeslat jazykovou analýzu 

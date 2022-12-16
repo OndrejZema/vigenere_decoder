@@ -36,7 +36,7 @@ export const UploadCryptogram = () => {
 
             </ButtonGroup>
 
-            <DynamicInputPanel showFileInput={showFileInput} onUploadCryptogram={handleUploadCryptogram} onChangeText={handleChangeText} />
+            <DynamicInputPanel textValue={decoderState.cryptogram} showFileInput={showFileInput} onUploadCryptogram={handleUploadCryptogram} onChangeText={handleChangeText} />
             {decoderState.cryptogramFile && showFileInput ?
                 <div>
                     <div className='font-thick'> Nahranný soubor </div>

@@ -40,7 +40,11 @@ export const Result = () => {
             </Table>
             <Form.Label>Délka klíče pro analýzu</Form.Label>
             <Form.Control type='number' onChange={e => setKeyLength(decoderDispatch, parseInt(e.target.value))} />
-            <div className='d-flex justify-content-end mt-2'>
+            <div className='d-flex justify-content-between mt-2'>
+            <Link to="/language">
+                    <Button>Zpět na zadávání jazyka</Button>
+                </Link>
+
                 <Link to="/decode">
                     <Button>Dekódovat zprávu</Button>
                 </Link>
