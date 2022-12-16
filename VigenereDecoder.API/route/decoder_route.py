@@ -7,13 +7,12 @@ decoder_api = Blueprint('decoder_api', __name__)
 def decode_route():
     data = request.get_json(force=True)
     if not("cryptogram" in data.keys() and "keyLength" in data.keys() and "language" in data.keys()):
-        print(data.keys())
-        return "500", 500
+        return "Chybí kryptogram, jazyková analýza nebo délka klíče", 400
     return decode_service(data["cryptogram"], data["language"], data["keyLength"])
 
 @decoder_api.route("/api/key/length", methods=["POST"])
 def keys_length_route():
     data = request.get_json(force=True)
     if not ("cryptogram" in data.keys() and "language" in data.keys()):
-        return "500", 500 
+        return "Chybí kryptogram nebo jazyková analýza", 400
     return keys_length_service(data["cryptogram"], data["language"])

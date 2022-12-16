@@ -3,12 +3,13 @@ import { Button, Form, Table } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
 import { Panel } from '../../components/Panel'
 import { setKeyLength, setKeysLength } from '../../store/actions/DecoderActions'
+import { createNotification } from '../../store/actions/NotificationsActions'
 import { GlobalContext } from '../../store/GlobalContextProvider'
 
 
 export const Result = () => {
 
-    const { decoderState, decoderDispatch } = React.useContext(GlobalContext)
+    const { decoderState, decoderDispatch, notificationsDispatch } = React.useContext(GlobalContext)
 
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_API_URL}/api/key/length`, {
@@ -18,7 +19,18 @@ export const Result = () => {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ cryptogram: decoderState.cryptogram, language: decoderState.language })
-        }).then(data => data.json()).then(json => setKeysLength(decoderDispatch, json["keysLength"]))
+        })
+        .then(data => {
+            if(!data.ok){
+                throw Error(`Error : ${data.statusText}`)
+            }
+            return data.json()
+        })
+        .then(json => setKeysLength(decoderDispatch, json["keysLength"]))
+        .catch(err => {
+            console.log(err)
+            // createNotification(notificationsDispatch, err.)
+        })
     }, [])
 
     return (

@@ -22,7 +22,8 @@ def int_factorization(value: int)->list[int]:
     return factorization
 
 def convert_language(lang: str):
-    lang = lang.replace("{", "").replace("}", "").replace("\r\n", ";")
+    lang = re.sub("\{|\}", "", lang)
+    lang = re.sub("(\n|\r|\r\n)", ";", lang)
     language = {}
     for i in lang.split(";"):
         i = i.split(",")
@@ -31,14 +32,6 @@ def convert_language(lang: str):
         language[i[0]] = float(i[1])
     return language
 
-def sum_list(data: list):
-    result = {}
-    for i in data:
-        if i in result.keys():
-            result[i] += 1
-        else:
-            result[i] = 1
-    return result
 
 class Kasiski:
     @property
@@ -214,12 +207,12 @@ class Vigener:
             frequency.append(max(analyze, key=analyze.get))
 
 
-        print("frequency{}".format(frequency))
+        # print("frequency{}".format(frequency))
         #prochazime z duvodu vice moznosti, ale zaciname pismenem "e"
-        print(self._language_analysis)
+        # print(self._language_analysis)
         for i in self._language_analysis.items():
-            secret_key = self.search_key(frequency, i[0])
-            print(self.decode(secret_key))
+            secret_key = self.search_key(frequency, i[0])# WARNING side effect 
+            # print(self.decode(secret_key))
             break
             #decode a otestování se slovníkem... pokud dobré tak hotovo... pokud ne, tak jdeme na dalsi nejcastejsi pismeno
     def decode(self, secret_key: str)->str:
