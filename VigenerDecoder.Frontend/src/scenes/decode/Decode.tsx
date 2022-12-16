@@ -4,11 +4,14 @@ import { setMessage } from '../../store/actions/DecoderActions'
 import { GlobalContext } from '../../store/GlobalContextProvider'
 import { Button, Form } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+import { createNotification } from '../../store/actions/NotificationsActions'
+import { isVariableDeclaration } from 'typescript'
+import { time } from 'console'
 
 
 export const Decode = () => {
 
-    const { decoderState, decoderDispatch } = React.useContext(GlobalContext)
+    const { decoderState, decoderDispatch, notificationsDispatch } = React.useContext(GlobalContext)
 
     React.useEffect(() => {
         fetch(`${process.env.REACT_APP_API_URL}/api/decode`, {
@@ -35,7 +38,10 @@ export const Decode = () => {
                 <Link to="/result">
                     <Button>Zpět</Button>
                 </Link>
-                <Button>Zkopírovat do schránky</Button>
+                <Button onClick={()=>{
+                    navigator.clipboard.writeText(decoderState.message)
+                    createNotification(notificationsDispatch, "Úspěšné zkopírování", "Dešifrovaný text byl úspěšně překopírován do schránky", "success", 1000)
+                }}>Zkopírovat do schránky</Button>
             </div>
 
         </Panel>

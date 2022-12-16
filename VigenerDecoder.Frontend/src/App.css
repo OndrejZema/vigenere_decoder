@@ -70,3 +70,16 @@
   color: #3b3b3b;
   background-color: #f8f8f8;
 }
+
+.notification-panel{
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  z-index: 999;
+}
+.notification{
+  opacity: 0.6;
+}
+.notification:hover{
+  opacity: 1;
+}

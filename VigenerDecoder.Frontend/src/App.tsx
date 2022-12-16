@@ -13,10 +13,12 @@ import { Decode } from './scenes/decode/Decode';
 import { GlobalContextProvider } from './store/GlobalContextProvider';
 import { UploadLanguge } from './scenes/uploadLanguage/UploadLanguage';
 import { CustomRoute } from './components/CustomRoute';
+import { NotificationsPanel } from './components/NotificationsPanel';
 
 function App() {
   return (
     <GlobalContextProvider>
+      <NotificationsPanel />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<CustomRoute> <UploadCryptogram /> </CustomRoute>}></Route>
