@@ -3,14 +3,17 @@ import { Panel } from '../../components/Panel'
 import { setMessage } from '../../store/actions/DecoderActions'
 import { GlobalContext } from '../../store/GlobalContextProvider'
 import { Button, Form } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { createNotification } from '../../store/actions/NotificationsActions'
 import { isVariableDeclaration } from 'typescript'
 import { time } from 'console'
+import { faArrowLeft, faPaste } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 
 export const Decode = () => {
 
+    const navigate = useNavigate()
     const { decoderState, decoderDispatch, notificationsDispatch } = React.useContext(GlobalContext)
 
     React.useEffect(() => {
@@ -29,7 +32,8 @@ export const Decode = () => {
                 return data.json()})
             .then(json => setMessage(decoderDispatch, json))
             .catch(err => {
-                createNotification(notificationsDispatch, "Error", err, "danger")
+                createNotification(notificationsDispatch, "Error", "Nastala chyba u získávání dekódované zprávy. Jsou všechny parametry správně?", "danger")
+                navigate("/result")
             })
     }, [])
 
@@ -42,12 +46,18 @@ export const Decode = () => {
             </Form.Control>
             <div className='d-flex justify-content-between'>
                 <Link to="/result">
-                    <Button>Zpět</Button>
+                    <Button>
+                    <FontAwesomeIcon icon={faArrowLeft} className="me-1" />
+                        Zpět
+                        </Button>
                 </Link>
                 <Button onClick={()=>{
                     navigator.clipboard.writeText(decoderState.message)
                     createNotification(notificationsDispatch, "Úspěšné zkopírování", "Dešifrovaný text byl úspěšně překopírován do schránky", "success", 1000)
-                }}>Zkopírovat do schránky</Button>
+                }}>
+                    <FontAwesomeIcon icon={faPaste} className="me-1" />
+                    Zkopírovat do schránky
+                    </Button>
             </div>
 
         </Panel>

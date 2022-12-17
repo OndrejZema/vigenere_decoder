@@ -1,3 +1,5 @@
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { Button, ButtonGroup, ToggleButton } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
@@ -47,7 +49,10 @@ export const UploadCryptogram = () => {
             }
             <div className='d-flex justify-content-end'>
                 <Link to={decoderState.cryptogram === ""?"":'/language'}  >
-                    <Button disabled={decoderState.cryptogram === ""}>Přejít na zadávání abecedy</Button>
+                    <Button disabled={decoderState.cryptogram === ""}>
+                    <FontAwesomeIcon icon={faCheck} className="me-1" />
+                        Přejít na zadávání abecedy
+                        </Button>
                 </Link>
             </div>
         </Panel>

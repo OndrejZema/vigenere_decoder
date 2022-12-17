@@ -10,9 +10,11 @@ export const NotificationsPanel = () => {
     return (
         <div className='notification-panel'>
             {notificationState.notifications.map(item => {
-                return <Notification
+                return <div key={`${Date.now()}${JSON.stringify(item)}`}>
+                <Notification
                     notification={item}
                 />
+                </div>
             })}
         </div>
     )

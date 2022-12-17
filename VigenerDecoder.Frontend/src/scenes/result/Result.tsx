@@ -1,6 +1,8 @@
+import { faArrowLeft, faGears } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { Button, Form, Table } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Panel } from '../../components/Panel'
 import { setKeyLength, setKeysLength } from '../../store/actions/DecoderActions'
 import { createNotification } from '../../store/actions/NotificationsActions'
@@ -8,6 +10,8 @@ import { GlobalContext } from '../../store/GlobalContextProvider'
 
 
 export const Result = () => {
+
+    const navigate = useNavigate()
 
     const { decoderState, decoderDispatch, notificationsDispatch } = React.useContext(GlobalContext)
 
@@ -28,7 +32,8 @@ export const Result = () => {
         })
         .then(json => setKeysLength(decoderDispatch, json["keysLength"]))
         .catch(err => {
-            createNotification(notificationsDispatch, "Error", err, "danger")
+            createNotification(notificationsDispatch, "Error", "Nastala chyba u výpočtu délky klíčů. Jsou všechny parametry správné?", "danger")
+            navigate("/")
         })
     }, [])
 
@@ -53,11 +58,17 @@ export const Result = () => {
             <Form.Control type='number' onChange={e => setKeyLength(decoderDispatch, parseInt(e.target.value))} />
             <div className='d-flex justify-content-between mt-2'>
             <Link to="/language">
-                    <Button>Zpět na zadávání jazyka</Button>
+                    <Button>
+                    <FontAwesomeIcon icon={faArrowLeft} className="me-1" />
+                        Zpět na zadávání jazyka
+                        </Button>
                 </Link>
 
                 <Link to="/decode">
-                    <Button>Dekódovat zprávu</Button>
+                    <Button>
+                    <FontAwesomeIcon icon={faGears} className="me-1" />
+                        Dekódovat zprávu
+                        </Button>
                 </Link>
             </div>
         </Panel>

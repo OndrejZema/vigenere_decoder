@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Panel } from '../../components/Panel'
-import { faQuestion } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faArrowRight, faBackspace, faCheck, faQuestion } from '@fortawesome/free-solid-svg-icons'
 import { GlobalContext } from '../../store/GlobalContextProvider';
 import { setLanguageFile } from '../../store/actions/DecoderActions';
 
@@ -54,11 +54,12 @@ export const UploadLanguge = () => {
 
             <div className="d-flex justify-content-between">
             <Link to="/">
-                    <Button>Zpět na zadávání kryptogramu</Button>
+                    <Button><FontAwesomeIcon icon={faArrowLeft} className="me-1" /> Zpět na zadávání kryptogramu</Button>
                 </Link>
 
                 <Link to={decoderState.language === ""?"":"/result"}>
                     <Button disabled={decoderState.language === ""}>
+                        <FontAwesomeIcon icon={faCheck} className="me-1" />
                         Odeslat jazykovou analýzu 
                     </Button>
                 </Link>
