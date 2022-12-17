@@ -22,9 +22,15 @@ export const Decode = () => {
             },
             body: JSON.stringify({ cryptogram: decoderState.cryptogram, keyLength: decoderState.keyLength, language: decoderState.language })
         })
-            .then(data => data.json())
+            .then(data => {
+                if(!data.ok){
+                    throw Error(`Error: ${data.statusText}`)
+                }
+                return data.json()})
             .then(json => setMessage(decoderDispatch, json))
-            .catch()
+            .catch(err => {
+                createNotification(notificationsDispatch, "Error", err, "danger")
+            })
     }, [])
 
     return (

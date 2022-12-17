@@ -28,8 +28,7 @@ export const Result = () => {
         })
         .then(json => setKeysLength(decoderDispatch, json["keysLength"]))
         .catch(err => {
-            console.log(err)
-            // createNotification(notificationsDispatch, err.)
+            createNotification(notificationsDispatch, "Error", err, "danger")
         })
     }, [])
 
