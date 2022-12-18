@@ -21,17 +21,14 @@ def int_factorization(value: int)->list[int]:
         factorization.append(value)
     return factorization
 
-def convert_language(lang: str):
-    lang = re.sub("\{|\}", "", lang)
-    lang = re.sub("(\n|\r|\r\n)", ";", lang)
-    language = {}
-    for i in lang.split(";"):
-        i = i.split(",")
-        if len(i) != 2:
-            continue
-        language[i[0]] = float(i[1])
-    return language
-
+def sum_list(data: list):
+    result = {}
+    for i in data:
+        if i in result.keys():
+            result[i] += 1
+        else:
+            result[i] = 1
+    return result
 
 class Kasiski:
     @property
@@ -68,6 +65,11 @@ class Kasiski:
                     if len(local_result) >= 2:
                         result.append(local_result)
 
+        # for i in range(2, len(self._cryptogram)):
+        #     for j in range(len(self._cryptogram)):
+        #         local_result = re.findall(self._cryptogram[j:j+i], self._cryptogram) 
+        #         if len(local_result) > 1:
+        #             result.append(local_result)
         self._sub_sequences = [i[0] for i in result]
 
     def calculate_key_length(self)->int:
@@ -186,6 +188,7 @@ class Vigener:
             self._cryptogram_table[index % self._key_length].append(i)
     
     def load_language(self, analysis: dict[str, float]) -> None:
+        # self._language_analysis = analysis
         self._language_analysis = {k: v for k, v, in reversed(sorted(analysis.items(), key=lambda item: item[1]))}
 
     def analyze_cryptogram(self) -> None:
@@ -202,14 +205,18 @@ class Vigener:
             frequency.append(max(analyze, key=analyze.get))
 
 
+        print("frequency{}".format(frequency))
         #prochazime z duvodu vice moznosti, ale zaciname pismenem "e"
+        print(self._language_analysis)
         for i in self._language_analysis.items():
-            secret_key = self.search_key(frequency, i[0])# WARNING side effect 
+            secret_key = self.search_key(frequency, i[0])
+            print(self.decode(secret_key))
             break
             #decode a otestování se slovníkem... pokud dobré tak hotovo... pokud ne, tak jdeme na dalsi nejcastejsi pismeno
     def decode(self, secret_key: str)->str:
         message: list[str] = []
         for index, character in enumerate(self._cryptogram):
+            # message.append((chr((ord(secret_key[index % len(secret_key)]) + ord(character))%26 + ord("A"))))
             message.append(   chr(   ((  ord(character) - ord(secret_key[index % len(secret_key)])   ) % 26) + ord("A")   )  )
 
         return "".join(message)
@@ -221,5 +228,6 @@ class Vigener:
                 if j[ord(character.upper()) - ord("A")] == i:
                     secret_key.append(j[0])
                     break
+        print(secret_key)
         self._key = "".join(secret_key)
         return self._key

@@ -35,13 +35,15 @@ def keys_length_service(cryptogram, language):
     except:
         return "Jakyková frenkvenční analýza není ve správném formátu", 400
 
+    try:
+        kasiski = Kasiski()
+        kasiski.load_cryptogram(cryptogram)
+        kasiski.calculate_key_length()
 
-    kasiski = Kasiski()
-    kasiski.load_cryptogram(cryptogram)
-    kasiski.calculate_key_length()
-
-    friedman = Friedman()
-    friedman.load_cryptogram(cryptogram)
-    friedman.load_language(converted_language)
-    friedman.calculate_key_length()
-    return {"keysLength":[{"name": "kasiski", "value": kasiski.key_length},{"name": "friedman", "value": friedman.key_length}]}
+        friedman = Friedman()
+        friedman.load_cryptogram(cryptogram)
+        friedman.load_language(converted_language)
+        friedman.calculate_key_length()
+        return {"keysLength":[{"name": "kasiski", "value": kasiski.key_length},{"name": "friedman", "value": friedman.key_length}]}
+    except:
+        return "Během zpracovávání nastal problém", 400

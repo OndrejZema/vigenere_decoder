@@ -1,11 +1,11 @@
 import React from 'react'
-import { Button, Overlay, OverlayTrigger, Tooltip } from 'react-bootstrap'
+import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap'
 import { useDropzone } from 'react-dropzone'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { Panel } from '../../components/Panel'
-import { faArrowLeft, faArrowRight, faBackspace, faCheck, faQuestion } from '@fortawesome/free-solid-svg-icons'
+import { faArrowLeft, faCheck, faQuestion } from '@fortawesome/free-solid-svg-icons'
 import { GlobalContext } from '../../store/GlobalContextProvider';
 import { setLanguageFile } from '../../store/actions/DecoderActions';
 

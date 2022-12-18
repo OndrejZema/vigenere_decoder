@@ -34,13 +34,10 @@ export const setCryptogramFile = (dispatch: React.Dispatch<IDecoderAction>, file
     const reader = new FileReader()
     reader.readAsText(files[0])
     reader.onload = (e) => {
-        // setImageURI(`${e.target?.result}`)
         if(!e.target || !e.target.result){
             console.log("Chyba behem nacitani")
             return
         }
-        // console.log(files[0].name)
-        // console.log(e!.target.result)
         if (!e || !e.target || !e.target.result){
             return
         }
@@ -55,13 +52,10 @@ export const setLanguageFile = (dispatch: React.Dispatch<IDecoderAction>, files:
     const reader = new FileReader()
     reader.readAsText(files[0])
     reader.onload = (e) => {
-        // setImageURI(`${e.target?.result}`)
         if(!e.target || !e.target.result){
             console.log("Chyba behem nacitani")
             return
         }
-        // console.log(files[0].name)
-        // console.log(e!.target.result)
         if (!e || !e.target || !e.target.result){
             return
         }

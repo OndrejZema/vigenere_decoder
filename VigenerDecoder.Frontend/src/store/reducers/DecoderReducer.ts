@@ -72,6 +72,7 @@ export const decoderReducer = (state: IDecoderState = decoderInitialState, actio
             return {
                 ...state,
                 loadedMessage: true,
+                key: action.payload.key?action.payload.key: "",
                 message: action.payload.message ? action.payload.message : ""
             }
         case SET_KEY_LENGTH:

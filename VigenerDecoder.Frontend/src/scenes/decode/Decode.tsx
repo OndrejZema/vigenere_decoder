@@ -5,8 +5,6 @@ import { GlobalContext } from '../../store/GlobalContextProvider'
 import { Button, Form } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import { createNotification } from '../../store/actions/NotificationsActions'
-import { isVariableDeclaration } from 'typescript'
-import { time } from 'console'
 import { faArrowLeft, faPaste } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
@@ -41,6 +39,8 @@ export const Decode = () => {
         <Panel loading={decoderState.message === ""}>
             <h2>Dekódovaná zpráva</h2>
             <hr />
+            <div>Klíč</div>
+            <div className="font-monospace">{decoderState.key}</div>
             <div>Rozkódovaná zpráva</div>
             <Form.Control as="textarea" className='mt-2 mb-2' rows={5} value={decoderState.message} wrap='true' readOnly={true}>
             </Form.Control>

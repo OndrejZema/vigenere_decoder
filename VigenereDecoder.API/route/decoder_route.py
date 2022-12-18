@@ -1,4 +1,4 @@
-from flask import Blueprint, request, make_response
+from flask import Blueprint, request
 from service.decoder_service import keys_length_service, decode_service
 
 decoder_api = Blueprint('decoder_api', __name__)
