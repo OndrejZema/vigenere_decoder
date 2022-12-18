@@ -1,4 +1,4 @@
-from vigenerlib.vigenerlib.vigener import Kasiski, Friedman, Vigener
+from vigenerlib.vigenerlib.vigener import Kasiski, Friedman, Vigener, convert_language
 import sys
 
 def main():
@@ -14,9 +14,7 @@ def main():
 
     language = {}
     with open("data/analyzeCZ.csv") as f:
-        for i in f.readlines():
-            i = i.replace("\n", "")
-            language[i.split(",")[0]] = float(i.split(",")[1])
+         language = convert_language("".join(f.readlines()))
 
 
     friedman = Friedman()
