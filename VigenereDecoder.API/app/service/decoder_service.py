@@ -1,4 +1,4 @@
-from utils.vigener import Kasiski, Friedman, Vigener, convert_language
+from app.utils.vigener import Kasiski, Friedman, Vigener, convert_language
 import re
 
 def decode_service(cryptogram, language, keyLength):
@@ -25,9 +25,10 @@ def decode_service(cryptogram, language, keyLength):
     return {"key": key, "msg": msg}
 
 def keys_length_service(cryptogram, language):
-
+    print("pokus")
     cryptogram = cryptogram.upper()
     if not re.fullmatch("[A-Z]+", cryptogram):
+        print("spatne znaky")
         return "Zadaný kryptogram obsahuje zakázané znaky, povolené jsou jen velká a malá písmena", 400
     converted_language = None
     try:
