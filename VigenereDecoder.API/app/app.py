@@ -11,3 +11,7 @@ app.add_middleware(
     allow_headers=["*"]
 )
 app.include_router(decoder_route.router)
+
+@app.get("/")
+def index():
+    return "OK"
