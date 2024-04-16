@@ -50,7 +50,9 @@ class Kasiski:
         self.search_sequence()
     def search_sequence(self)-> None:
         result = []
-        for i in range(len(self._cryptogram) // 2, 1, -1):
+        # procházení všech vzorů (dána konstanta 5 pro optimální velikost)
+        # for i in range(len(self._cryptogram) // 2, 1, -1):
+        for i in range(5 if len(self._cryptogram) > 5 else len(self._cryptogram) // 2, 1, -1):
             for j in range(len(self._cryptogram)):
                 if j+i <= len(self._cryptogram):
                     
